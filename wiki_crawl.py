@@ -20,7 +20,7 @@ def crawl(next_link, end_topic):
     links_seen = {}
     trace_history = []
 
-    while(next_link):
+    while (next_link):
         req_start = time.time()
 
         src = requests.get(f"{baseUrl}/wiki/{next_link}").text
@@ -35,7 +35,7 @@ def crawl(next_link, end_topic):
             req_end = time.time()
             print(f"{topic_title} - {int((req_end-req_start)*1000)}ms")
             return True, trace_history
-        
+
         next_link = get_next_link(soup.body, links_seen, link_regex)
 
         req_end = time.time()
@@ -45,16 +45,30 @@ def crawl(next_link, end_topic):
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description='Find trace from given page to another page')
-    parser.add_argument('--start', type=str, default="Main_Page", metavar="TOPIC", help="start topic")
-    parser.add_argument('--end', type=str, default="Philosophy", metavar="TOPIC", help="end topic")
+    parser = ArgumentParser(
+        description='Find trace from given page to another page')
+    parser.add_argument(
+        '--start',
+        type=str,
+        default="Main_Page",
+        metavar="TOPIC",
+        help="start topic")
+    parser.add_argument(
+        '--end',
+        type=str,
+        default="Philosophy",
+        metavar="TOPIC",
+        help="end topic")
     args = parser.parse_args()
 
     try:
-      result, trace = crawl(args.start, args.end)
-      
-      with open('trace.txt', 'w') as f:
-          for topic in trace:
-              f.write("%s\n" % topic)
+        result, trace = crawl(args.start, args.end)
+
+        result = "Success" if result else "Failure"
+        print(f"[{result}]{len(trace)} steps")
+
+        with open('trace.txt', 'w') as f:
+            for topic in trace:
+                f.write("%s\n" % topic)
     except Exception as e:
-      print(e)
+        print(e)
