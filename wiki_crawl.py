@@ -47,18 +47,8 @@ def crawl(next_link, end_topic):
 if __name__ == "__main__":
     parser = ArgumentParser(
         description='Find trace from given page to another page')
-    parser.add_argument(
-        '--start',
-        type=str,
-        default="Main_Page",
-        metavar="TOPIC",
-        help="start topic")
-    parser.add_argument(
-        '--end',
-        type=str,
-        default="Philosophy",
-        metavar="TOPIC",
-        help="end topic")
+    parser.add_argument('--start', type=str, default="Main_Page", metavar="TOPIC", help="start topic")
+    parser.add_argument('--end', type=str, default="Philosophy", metavar="TOPIC", help="end topic")
     args = parser.parse_args()
 
     try:
